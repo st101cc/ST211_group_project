@@ -1,0 +1,303 @@
+Setup
+```{r}
+rm(list=ls())
+library(arm)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(gridExtra)
+```
+
+Load data
+```{r}
+data<-read.csv("data/W8QDEB2.csv",header = TRUE, stringsAsFactors=TRUE)
+head(data)
+summary(data)
+dim(data)
+```
+continuous variables: "W1GrssyrHH", "W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DGHQSC", "W8QDEB2"
+
+Exploratory analysis of categorical variables
+#"W1wrk1aMP" vs "W8QDEB2"
+```{r}
+W1wrk1aMP<-ggplot(data=data, aes(x=factor(W1wrk1aMP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1wrk1aMP
+```
+#"W1hea2MP" vs "W8QDEB2"
+```{r}
+W1hea2MP<-ggplot(data=data, aes(x=factor(W1hea2MP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hea2MP
+```
+
+#"W1NoldBroHS" vs "W8QDEB2"
+```{r}
+W1NoldBroHS<-ggplot(data=data, aes(x=factor(W1NoldBroHS),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1NoldBroHS
+```
+
+#"W1InCarHH" vs "W8QDEB2"
+```{r}
+W1InCarHH<-ggplot(data=data, aes(x=factor(W1InCarHH),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1InCarHH
+```
+
+#"W1hous12HH" vs "W8QDEB2"
+```{r}
+W1hous12HH<-ggplot(data=data, aes(x=factor(W1hous12HH),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hous12HH
+```
+
+#"W1usevcHH" vs "W8QDEB2"
+```{r}
+W1usevcHH<-ggplot(data=data, aes(x=factor(W1usevcHH),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1usevcHH
+```
+
+#"W1hiqualmum" vs "W8QDEB2"
+```{r}
+W1hiqualmum<-ggplot(data=data, aes(x=factor(W1hiqualmum),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hiqualmum
+```
+
+#"W1hiqualdad" vs "W8QDEB2"
+```{r}
+W1hiqualdad<-ggplot(data=data, aes(x=factor(W1hiqualdad),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hiqualdad
+```
+
+#"W1wrkfulldad" vs "W8QDEB2"
+```{r}
+W1wrkfulldad<-ggplot(data=data, aes(x=factor(W1wrkfulldad),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1wrkfulldad
+```
+
+#"W1wrkfullmum" vs "W8QDEB2"
+```{r}
+W1wrkfullmum<-ggplot(data=data, aes(x=factor(W1wrkfullmum),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1wrkfullmum
+```
+
+#"W1empsmum" vs "W8QDEB2"
+```{r}
+W1empsmum<-ggplot(data=data, aes(x=factor(W1empsmum),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1empsmum
+```
+
+#"W1empsdad" vs "W8QDEB2"
+```{r}
+W1empsdad<-ggplot(data=data, aes(x=factor(W1empsdad),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1empsdad
+```
+
+#"IndSchool" vs "W8QDEB2"
+```{r}
+IndSchool<-ggplot(data=data, aes(x=factor(IndSchool),y=W8QDEB2)) +
+  geom_boxplot()
+  
+IndSchool
+```
+
+#"W1marstatmum" vs "W8QDEB2"
+```{r}
+W1marstatmum<-ggplot(data=data, aes(x=factor(W1marstatmum),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1marstatmum
+```
+
+#"W1depkids" vs "W8QDEB2"
+```{r}
+W1depkids<-ggplot(data=data, aes(x=factor(W1depkids),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1depkids
+```
+#"W1famtyp2" vs "W8QDEB2"
+```{r}
+W1famtyp2<-ggplot(data=data, aes(x=factor(W1famtyp2),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1famtyp2
+```
+
+#"W1nssecfam" vs "W8QDEB2"
+```{r}
+W1nssecfam<-ggplot(data=data, aes(x=factor(W1nssecfam),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1nssecfam
+```
+
+#"W1ethgrpYP" vs "W8QDEB2"
+```{r}
+W1ethgrpYP<-ggplot(data=data, aes(x=factor(W1ethgrpYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1ethgrpYP
+```
+
+#"W1heposs9YP" vs "W8QDEB2"
+```{r}
+W1heposs9YP<-ggplot(data=data, aes(x=factor(W1heposs9YP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1heposs9YP
+```
+
+#"W1hwndayYP" vs "W8QDEB2"
+```{r}
+W1hwndayYP<-ggplot(data=data, aes(x=factor(W1hwndayYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hwndayYP
+```
+
+#"W1truantYP" vs "W8QDEB2"
+```{r}
+W1truantYP<-ggplot(data=data, aes(x=factor(W1truantYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1truantYP
+```
+
+#"W1alceverYP" vs "W8QDEB2"
+```{r}
+W1alceverYP<-ggplot(data=data, aes(x=factor(W1alceverYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1alceverYP
+```
+
+#"W1bulrc" vs "W8QDEB2"
+```{r}
+W1bulrc<-ggplot(data=data, aes(x=factor(W1bulrc),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1bulrc
+```
+
+#"W1disabYP" vs "W8QDEB2"
+```{r}
+W1disabYP<-ggplot(data=data, aes(x=factor(W1disabYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1disabYP
+```
+
+Exploratory analysis of continuous variables
+
+#"W1GrssyrHH" vs "W8QDEB2"
+```{r}
+W1GrssyrHH<-ggplot(data, aes(x = W1GrssyrHH, y = W8QDEB2)) + 
+  geom_point(alpha=0.5)
+
+W1GrssyrHH
+```
+
+#"W1yschat1" vs "W8QDEB2"
+```{r}
+W1yschat1<-ggplot(data, aes(x = W1yschat1, y = W8QDEB2)) + 
+  geom_point(alpha=0.5)
+
+W1yschat1
+```
+
+W2ghq12scr<-
+W4schatYP<-
+W6DebtattYP<-
+W8DGHQSC<-
+
+Calculate percentage of missing vlaues among predictors
+```{r}
+percentages <- c()
+for (col in names(data)) {
+    column <- data[[col]]
+    count <- sum(column >= -999 & column <= -1)
+    total_values <- length(column)
+    percentage <- (count / total_values) * 100
+    percentages <- c(percentages, percentage)
+}
+
+missing <- data.frame(Column = names(data), Percentage = percentages)
+missing
+```
+
+
+Categorical variables with missing values
+
+# remove data with less than 10% missing values
+```{r}
+new.data <- subset(data, W1wrk1aMP>-1 &
+                         W1condur5MP>-1 &
+                         W1hea2MP>-1&
+                         W1NoldBroHS>-1&
+                         W1InCarHH>-1&
+                         W1hous12HH>-1&
+                         W1usevcHH>-1&
+                         W1hiqualmum>-1&
+                         W1wrkfullmum>-1&
+                         W1empsmum>-1&
+                         W1marstatmum>-1&
+                         W1depkids>-1&
+                         W1famtyp2>-1&
+                         W1nssecfam>-1&
+                         W1ethgrpYP>-1&
+                         W1heposs9YP>-1&			
+                         W1hwndayYP>-1&			
+                         W1truantYP>-1&			
+                         W1alceverYP>-1&		
+                         W1bulrc>-1&		
+                         W1disabYP>-1&		
+                         W2disc1YP>-1&			
+                         W2depressYP>-1&
+                         W4CannTryYP>-1&			
+                         W4NamesYP>-1&			
+                         W4RacismYP>-1&			
+                         W4empsYP>-1&			
+                         W5JobYP>-1&			
+                         W5EducYP>-1&			
+                         W5Apprent1YP>-1&
+                         W6JobYP>-1&			
+                         W6UnivYP>-1&
+                         W6OwnchiDV>-1&
+                         W8DMARSTAT>-1&			
+                         W8TENURE
+                         )
+dim(new.data)
+```
+
+# replace data with NA for more than 10% missing values
+```{r}
+data[, columns_more_than_10_percent] <- lapply(data[, columns_more_than_10_percent], function(x) {
+    x[x >= -999 & x <= -1] <- NA
+    return(x)
+})
+```
+
+Continuous variables with missing values
+```{r}
+```
