@@ -226,6 +226,121 @@ W1yschat1<-ggplot(data, aes(x = W1yschat1, y = W8QDEB2)) +
 W1yschat1
 ```
 
+# W2ghq12scr vs W8QDEB2
+```{r}
+W2ghq12scr <- ggplot(data=data, aes(x=factor(W2ghq12scr), y=W8QDEB2)) +
+  geom_point(alpha=0.5)
+W2ghq12scr
+```
+# W2disc1YP vs W8QDEB2
+```{r}
+W2disc1YP <- ggplot(data=data, aes(x=factor(W2disc1YP), y=W8QDEB2)) +
+  geom_boxplot()
+W2disc1YP
+```
+# W2depressYP vs W8QDEB2
+```{r}
+W2depressYP <- ggplot(data=data, aes(x=factor(W2depressYP), y=W8QDEB2)) +
+  geom_boxplot()
+W2depressYP
+```
+
+# W4AlcFreqYP vs W8QDEB2
+W4AlcFreqYP <- ggplot(data=data, aes(x=factor(W4AlcFreqYP), y=W8QDEB2)) + geom_boxplot()
+W4AlcFreqYP
+
+# W4CannTryYP vs W8QDEB2
+W4CannTryYP <- ggplot(data=data, aes(x=factor(W4CannTryYP), y=W8QDEB2)) + geom_boxplot()
+W4CannTryYP
+
+# W4NamesYP vs W8QDEB2
+W4NamesYP <- ggplot(data=data, aes(x=factor(W4NamesYP), y=W8QDEB2)) + geom_boxplot()
+W4NamesYP
+
+# W4RacismYP vs W8QDEB2
+W4RacismYP <- ggplot(data=data, aes(x=factor(W4RacismYP), y=W8QDEB2)) + geom_boxplot()
+W4RacismYP
+
+# W4empsYP vs W8QDEB2
+W4empsYP <- ggplot(data=data, aes(x=factor(W4empsYP), y=W8QDEB2)) + geom_boxplot()
+W4empsYP
+
+# W4schatYP vs W8QDEB2
+W4schatYP <- ggplot(data=data, aes(x=factor(W4schatYP), y=W8QDEB2)) + geom_point(alpha=0.5)
+W4schatYP
+
+# W4Childck1YP vs W8QDEB2
+W4Childck1YP <- ggplot(data=data, aes(x=factor(W4Childck1YP), y=W8QDEB2)) + geom_boxplot()
+W4Childck1YP
+
+# W5JobYP vs W8QDEB2
+W5JobYP <- ggplot(data=data, aes(x=factor(W5JobYP), y=W8QDEB2)) + geom_boxplot()
+W5JobYP
+
+# W5EducYP vs W8QDEB2
+W5EducYP <- ggplot(data=data, aes(x=factor(W5EducYP), y=W8QDEB2)) + geom_boxplot()
+W5EducYP
+
+# W5Apprent1YP vs W8QDEB2
+W5Apprent1YP <- ggplot(data=data, aes(x=factor(W5Apprent1YP), y=W8QDEB2)) + geom_boxplot()
+W5Apprent1YP
+
+# W6JobYP vs W8QDEB2
+W6JobYP <- ggplot(data=data, aes(x=factor(W6JobYP), y=W8QDEB2)) + geom_boxplot()
+W6JobYP
+
+# W6UnivYP vs W8QDEB2
+W6UnivYP <- ggplot(data=data, aes(x=factor(W6UnivYP), y=W8QDEB2)) + geom_boxplot()
+W6UnivYP
+
+# W6EducYP vs W8QDEB2
+W6EducYP <- ggplot(data=data, aes(x=factor(W6EducYP), y=W8QDEB2)) + geom_boxplot()
+W6EducYP
+
+# W6Apprent1YP vs W8QDEB2
+W6Apprent1YP <- ggplot(data=data, aes(x=factor(W6Apprent1YP), y=W8QDEB2)) + geom_boxplot()
+W6Apprent1YP
+
+# W6acqno vs W8QDEB2
+W6acqno <- ggplot(data=data, aes(x=factor(W6acqno), y=W8QDEB2)) + geom_boxplot()
+W6acqno
+
+# W6gcse vs W8QDEB2
+W6gcse <- ggplot(data=data, aes(x=factor(W6gcse), y=W8QDEB2)) + geom_boxplot()
+W6gcse
+
+# W6als vs W8QDEB2
+W6als <- ggplot(data=data, aes(x=factor(W6als), y=W8QDEB2)) + geom_boxplot()
+W6als
+
+# W6OwnchiDV vs W8QDEB2
+W6OwnchiDV <- ggplot(data=data, aes(x=factor(W6OwnchiDV), y=W8QDEB2)) + geom_boxplot()
+W6OwnchiDV
+
+# W6Childliv vs W8QDEB2
+W6Childliv <- ggplot(data=data, aes(x=factor(W6Childliv), y=W8QDEB2)) + geom_boxplot()
+W6Childliv
+
+# W6DebtattYP vs W8QDEB2
+W6DebtattYP <- ggplot(data=data, aes(x=factor(W6DebtattYP), y=W8QDEB2)) + geom_point(alpha=0.5)
+W6DebtattYP
+
+# W8DGHQSC vs W8QDEB2
+W8DGHQSC <- ggplot(data=data, aes(x=factor(W8DGHQSC), y=W8QDEB2)) + geom_point(alpha=0.5)
+W8DGHQSC
+
+# W8DMARSTAT vs W8QDEB2
+W8DMARSTAT <- ggplot(data=data, aes(x=factor(W8DMARSTAT), y=W8QDEB2)) + geom_boxplot()
+W8DMARSTAT
+
+# W8TENURE vs W8QDEB2
+W8TENURE <- ggplot(data=data, aes(x=factor(W8TENURE), y=W8QDEB2)) + geom_boxplot()
+W8TENURE
+
+# W8DACTIVITY vs W8QDEB2
+W8DACTIVITY <- ggplot(data=data, aes(x=factor(W8DACTIVITY), y=W8QDEB2)) + geom_boxplot()
+W8DACTIVITY
+
 W2ghq12scr<-
 W4schatYP<-
 W6DebtattYP<-
