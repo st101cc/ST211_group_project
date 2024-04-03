@@ -15,11 +15,11 @@ library(gridExtra)
 ```
 
 ```{r}
-eot.dat <- read.csv("data/W8DINCW_newlevel.csv",stringsAsFactors=TRUE)
+eot.dat <- read.csv("../data/W8DINCW_newlevel.csv",stringsAsFactors=TRUE)
 ```
 
 ```{r}
-data.tona <- read.csv("data/W8DINCW_tona.csv")
+data.tona <- read.csv("../data/W8DINCW_tona.csv")
 ```
 
 # Summary
@@ -473,6 +473,9 @@ Value = 4.0 Label = Not at all likely
 ggplot(data=eot.dat, aes(x=factor(W1heposs9YP),y=W8DINCW)) +
   geom_boxplot()
 ```
+
+Higher the likelihood of going to university, higher the median weekly income.
+
 
 ```{r}
 summary(lm(W8DINCW ~ factor(W1heposs9YP), data=eot.dat))

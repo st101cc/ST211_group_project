@@ -16,7 +16,7 @@ library(ggplot2)
 
 
 ```{r setup, include=FALSE}
-data <- read.csv("W8DINCW.csv")
+data <- read.csv("../W8DINCW.csv")
 ```
 
 
