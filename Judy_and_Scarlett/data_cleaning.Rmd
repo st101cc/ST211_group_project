@@ -1,0 +1,98 @@
+---
+title: "data_cleaning"
+output: html_document
+date: "2024-04-01"
+---
+
+```{r}
+library(dplyr)       
+library(tidyr)      
+library(readr)      
+library(lubridate)
+library(arm)
+library(tidyselect)
+library(ggplot2)
+```
+
+
+```{r setup, include=FALSE}
+data <- read.csv("W8DINCW.csv")
+```
+
+
+# Summary
+
+- CONTINUOUS variables: *W1GrssyrMP*(44.82), *W1GrssyrHH*(49.3),【to remove these predictors from a final model to see if they change the 
+regression substantially, provided of course that they are significant】
+
+W1yschat1(1.86), W2ghq12scr(4.09), W4schatYP(0.63), W6DebtattYP(0),W8DINCW(0), W8DGHQSC(3.7)
+
+
+- BINARY variables: *W8DDEGP*(38.5% missing)
+
+
+- CATEGORICAL variables with more than 10% missing value: *W1hiqualdad*(25.4), *W1wrkfulldad*(19.15), *W1empsdad*(19.1),
+
+*W4Childck1YP*(99.5), *W6EducYP*(37.9), *W6Apprent1YP*(37.9), *W6Childliv*(97.4), *W6NEETAct* (93.7), *W8DDEGP*(38.5),
+
+*W6Childliv*(97.4), *W6NEETAct*(93.7)
+
+```{r}
+neg_percentages <- data %>%
+  summarise_all(~mean(.x < 0, na.rm = TRUE) * 100)
+
+print(neg_percentages)
+```
+# Data Cleaning
+
+Remove the missing values of variables with less than 10% missing value
+```{r}
+vars_to_modify <- names(neg_percentages)[neg_percentages < 10]
+
+data.tona <- data %>%
+  mutate(across(everything(), ~replace(., . < 0, NA))) %>% #changed the negative values to NA
+  filter(!if_any(all_of(vars_to_modify), is.na))#number of rows decreases from 5792 to 3265
+```
+
+Factorise categorical variables
+```{r}
+exclude_vars <- c("W1GrssyrMP", "W1GrssyrHH", "W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DINCW", "W8DGHQSC")
+data.tona <- data.tona %>%
+  mutate(across(where(is.integer) & !all_of(exclude_vars), factor))
+```
+
+## New Level for Missing Values
+
+Create a new level for the missing values of categorical variables
+```{r}
+add_missing_level <- function(x) {
+  if(any(is.na(x))) { #whether there are missing values
+    x <- factor(x, levels = c(levels(x), "missing")) #create new level
+    x[is.na(x)] <- "missing" #replace NA with new level
+  }
+  return(x)
+}
+
+data.nl <- data.tona %>%
+  mutate(across(where(is.factor), ~add_missing_level(.)))
+```
+
+# Output1, replace missing values with NA
+
+the missing value of categorical variables with less than 10% missing value are removed
+
+```{r}
+write.csv(data.tona, file = "W8DINCW_tona.csv")
+```
+
+
+# Output2, create a new level for the missing values of some categorical variables
+
+the missing value of categorical variables with less than 10% missing value are removed
+
+```{r}
+write.csv(data.nl, file = "W8DINCW_newlevel.csv")
+```
+
+
+
