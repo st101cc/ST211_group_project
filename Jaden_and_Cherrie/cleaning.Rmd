@@ -1,0 +1,133 @@
+Setup
+```{r}
+rm(list=ls())
+library(arm)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(gridExtra)
+```
+
+Load data
+```{r}
+data<-read.csv("../data/W8QDEB2.csv",header = TRUE, stringsAsFactors=TRUE)
+head(data)
+summary(data)
+dim(data)
+```
+
+Calculate percentage of missing values among predictors
+
+```{r}
+percentages <- c()
+for (col in names(data)) {
+    column <- data[[col]]
+    count <- sum(column >= -999 & column <= -1)
+    total_values <- length(column)
+    percentage <- (count / total_values) * 100
+    percentages <- c(percentages, percentage)
+}
+
+missing <- data.frame(Column = names(data), Percentage = percentages)
+missing
+```
+# Summary 
+
+Continuous: (more than 30 percent missing)
+  "W1GrssyrHH": 46.56 (remove from final model to see if regression changes substantially)
+  
+  
+Categorical: (more than 10 percent missing)
+  "W1hiqualdad": 26.41
+  "W1wrkfulldad": 20.60
+  "W1empsdad": 20.60
+  "W4AlcFreqYP": 17.41
+  "W4Childck1YP":99.44
+  "W6EducYP":38.99
+  "W6Apprent1YP":38.99
+  "W6Childliv":97.22
+
+# Clean data
+
+Remove data with less than 10% missing values for categorical variables
+
+```{r}
+new.data <- subset(data, W1wrk1aMP>-1 &
+                         W1condur5MP>-1 &
+                         W1hea2MP>-1&
+                         W1NoldBroHS>-1&
+                         W1InCarHH>-1&
+                         W1hous12HH>-1&
+                         W1usevcHH>-1&
+                         W1hiqualmum>-1&
+                         W1wrkfullmum>-1&
+                         W1empsmum>-1&
+                         W1marstatmum>-1&
+                         W1depkids>-1&
+                         W1famtyp2>-1&
+                         W1nssecfam>-1&
+                         W1ethgrpYP>-1&
+                         W1heposs9YP>-1&			
+                         W1hwndayYP>-1&			
+                         W1truantYP>-1&			
+                         W1alceverYP>-1&		
+                         W1bulrc>-1&		
+                         W1disabYP>-1&		
+                         W2disc1YP>-1&			
+                         W2depressYP>-1&
+                         W4CannTryYP>-1&			
+                         W4NamesYP>-1&			
+                         W4RacismYP>-1&			
+                         W4empsYP>-1&			
+                         W5JobYP>-1&			
+                         W5EducYP>-1&			
+                         W5Apprent1YP>-1&
+                         W6JobYP>-1&			
+                         W6UnivYP>-1&
+                         W6OwnchiDV>-1&
+                         W8DMARSTAT>-1&			
+                         W8TENURE
+                         )
+dim(new.data)
+```
+
+Replace data with NA
+
+```{r}
+#change all the negative values to NA
+new.data <- new.data %>%
+  mutate(across(everything(), ~replace(., . < 0, NA)))
+```
+
+Create a "missing level" for categorical variables
+
+```{r}
+add_missing_level <- function(x) {
+  if(any(is.na(x))) { #whether there are missing values
+    x <- factor(x, levels = c(levels(x), "missing")) #create new level
+    x[is.na(x)] <- "missing" #replace NA with new level
+  }
+  return(x)
+}
+
+new.data <- new.data %>%
+  mutate(across(where(is.factor), ~add_missing_level(.)))
+```
+
+Check the missing values in new.data
+
+```{r}
+colSums(is.na(new.data))
+```
+
+# W6EducYP vs W8QDEB2
+```{r}
+W6EducYP <- ggplot(data=new.data, aes(x=factor(W6EducYP), y=W8QDEB2)) + geom_boxplot()
+W6EducYP
+```
+
+Store the cleaned data in a csv file
+
+```{r}
+write.csv(new.data, file = "W8QDEB2_cleaned.csv")
+```

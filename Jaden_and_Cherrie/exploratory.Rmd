@@ -10,14 +10,14 @@ library(gridExtra)
 
 Load data
 ```{r}
-data<-read.csv("data/W8QDEB2.csv",header = TRUE, stringsAsFactors=TRUE)
+data<-read.csv("../data/W8QDEB2.csv",header = TRUE, stringsAsFactors=TRUE)
 head(data)
 summary(data)
 dim(data)
 ```
-continuous variables: "W1GrssyrHH", "W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DGHQSC", "W8QDEB2"
 
 Exploratory analysis of categorical variables
+
 #"W1wrk1aMP" vs "W8QDEB2"
 ```{r}
 W1wrk1aMP<-ggplot(data=data, aes(x=factor(W1wrk1aMP),y=W8QDEB2)) +
@@ -208,7 +208,149 @@ W1disabYP<-ggplot(data=data, aes(x=factor(W1disabYP),y=W8QDEB2)) +
 W1disabYP
 ```
 
+# W2disc1YP vs W8QDEB2
+```{r}
+W2disc1YP <- ggplot(data=data, aes(x=factor(W2disc1YP), y=W8QDEB2)) +
+  geom_boxplot()
+W2disc1YP
+```
+
+# W2depressYP vs W8QDEB2
+```{r}
+W2depressYP <- ggplot(data=data, aes(x=factor(W2depressYP), y=W8QDEB2)) +
+  geom_boxplot()
+W2depressYP
+```
+
+# W4AlcFreqYP vs W8QDEB2
+```{r}
+W4AlcFreqYP <- ggplot(data=data, aes(x=factor(W4AlcFreqYP), y=W8QDEB2)) + geom_boxplot()
+W4AlcFreqYP
+```
+
+# W4CannTryYP vs W8QDEB2
+```{r}
+W4CannTryYP <- ggplot(data=data, aes(x=factor(W4CannTryYP), y=W8QDEB2)) + geom_boxplot()
+W4CannTryYP
+```
+
+# W4NamesYP vs W8QDEB2
+```{r}
+W4NamesYP <- ggplot(data=data, aes(x=factor(W4NamesYP), y=W8QDEB2)) + geom_boxplot()
+W4NamesYP
+```
+
+# W4RacismYP vs W8QDEB2
+```{r}
+W4RacismYP <- ggplot(data=data, aes(x=factor(W4RacismYP), y=W8QDEB2)) + geom_boxplot()
+W4RacismYP
+```
+
+# W4empsYP vs W8QDEB2
+```{r}
+W4empsYP <- ggplot(data=data, aes(x=factor(W4empsYP), y=W8QDEB2)) + geom_boxplot()
+W4empsYP
+```
+
+# W4Childck1YP vs W8QDEB2
+```{r}
+W4Childck1YP <- ggplot(data=data, aes(x=factor(W4Childck1YP), y=W8QDEB2)) + geom_boxplot()
+W4Childck1YP
+```
+
+# W5JobYP vs W8QDEB2
+```{r}
+W5JobYP <- ggplot(data=data, aes(x=factor(W5JobYP), y=W8QDEB2)) + geom_boxplot()
+W5JobYP
+```
+
+# W5EducYP vs W8QDEB2
+```{r}
+W5EducYP <- ggplot(data=data, aes(x=factor(W5EducYP), y=W8QDEB2)) + geom_boxplot()
+W5EducYP
+```
+
+# W5Apprent1YP vs W8QDEB2
+```{r}
+W5Apprent1YP <- ggplot(data=data, aes(x=factor(W5Apprent1YP), y=W8QDEB2)) + geom_boxplot()
+W5Apprent1YP
+```
+
+# W6JobYP vs W8QDEB2
+```{r}
+W6JobYP <- ggplot(data=data, aes(x=factor(W6JobYP), y=W8QDEB2)) + geom_boxplot()
+W6JobYP
+```
+
+# W6UnivYP vs W8QDEB2
+```{r}
+W6UnivYP <- ggplot(data=data, aes(x=factor(W6UnivYP), y=W8QDEB2)) + geom_boxplot()
+W6UnivYP
+```
+
+# W6EducYP vs W8QDEB2
+```{r}
+W6EducYP <- ggplot(data=data, aes(x=factor(W6EducYP), y=W8QDEB2)) + geom_boxplot()
+W6EducYP
+```
+
+# W6Apprent1YP vs W8QDEB2
+```{r}
+W6Apprent1YP <- ggplot(data=data, aes(x=factor(W6Apprent1YP), y=W8QDEB2)) + geom_boxplot()
+W6Apprent1YP
+```
+
+# W6acqno vs W8QDEB2
+```{r}
+W6acqno <- ggplot(data=data, aes(x=factor(W6acqno), y=W8QDEB2)) + geom_boxplot()
+W6acqno
+```
+
+# W6gcse vs W8QDEB2
+```{r}
+W6gcse <- ggplot(data=data, aes(x=factor(W6gcse), y=W8QDEB2)) + geom_boxplot()
+W6gcse
+```
+
+# W6als vs W8QDEB2
+```{r}
+W6als <- ggplot(data=data, aes(x=factor(W6als), y=W8QDEB2)) + geom_boxplot()
+W6als
+```
+
+# W6OwnchiDV vs W8QDEB2
+```{r}
+W6OwnchiDV <- ggplot(data=data, aes(x=factor(W6OwnchiDV), y=W8QDEB2)) + geom_boxplot()
+W6OwnchiDV
+```
+
+# W6Childliv vs W8QDEB2
+```{r}
+W6Childliv <- ggplot(data=data, aes(x=factor(W6Childliv), y=W8QDEB2)) + geom_boxplot()
+W6Childliv
+```
+
+# W8DMARSTAT vs W8QDEB2
+```{r}
+W8DMARSTAT <- ggplot(data=data, aes(x=factor(W8DMARSTAT), y=W8QDEB2)) + geom_boxplot()
+W8DMARSTAT
+```
+
+# W8TENURE vs W8QDEB2
+```{r}
+W8TENURE <- ggplot(data=data, aes(x=factor(W8TENURE), y=W8QDEB2)) + geom_boxplot()
+W8TENURE
+```
+
+# W8DACTIVITY vs W8QDEB2
+```{r}
+W8DACTIVITY <- ggplot(data=data, aes(x=factor(W8DACTIVITY), y=W8QDEB2)) + geom_boxplot()
+W8DACTIVITY
+```
+
 Exploratory analysis of continuous variables
+
+continuous variables: "W1GrssyrHH", "W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DGHQSC"
 
 #"W1GrssyrHH" vs "W8QDEB2"
 ```{r}
@@ -228,191 +370,25 @@ W1yschat1
 
 # W2ghq12scr vs W8QDEB2
 ```{r}
-W2ghq12scr <- ggplot(data=data, aes(x=factor(W2ghq12scr), y=W8QDEB2)) +
+W2ghq12scr <- ggplot(data=data, aes(x=W2ghq12scr, y=W8QDEB2)) +
   geom_point(alpha=0.5)
 W2ghq12scr
 ```
-# W2disc1YP vs W8QDEB2
-```{r}
-W2disc1YP <- ggplot(data=data, aes(x=factor(W2disc1YP), y=W8QDEB2)) +
-  geom_boxplot()
-W2disc1YP
-```
-# W2depressYP vs W8QDEB2
-```{r}
-W2depressYP <- ggplot(data=data, aes(x=factor(W2depressYP), y=W8QDEB2)) +
-  geom_boxplot()
-W2depressYP
-```
-
-# W4AlcFreqYP vs W8QDEB2
-W4AlcFreqYP <- ggplot(data=data, aes(x=factor(W4AlcFreqYP), y=W8QDEB2)) + geom_boxplot()
-W4AlcFreqYP
-
-# W4CannTryYP vs W8QDEB2
-W4CannTryYP <- ggplot(data=data, aes(x=factor(W4CannTryYP), y=W8QDEB2)) + geom_boxplot()
-W4CannTryYP
-
-# W4NamesYP vs W8QDEB2
-W4NamesYP <- ggplot(data=data, aes(x=factor(W4NamesYP), y=W8QDEB2)) + geom_boxplot()
-W4NamesYP
-
-# W4RacismYP vs W8QDEB2
-W4RacismYP <- ggplot(data=data, aes(x=factor(W4RacismYP), y=W8QDEB2)) + geom_boxplot()
-W4RacismYP
-
-# W4empsYP vs W8QDEB2
-W4empsYP <- ggplot(data=data, aes(x=factor(W4empsYP), y=W8QDEB2)) + geom_boxplot()
-W4empsYP
 
 # W4schatYP vs W8QDEB2
-W4schatYP <- ggplot(data=data, aes(x=factor(W4schatYP), y=W8QDEB2)) + geom_point(alpha=0.5)
+```{r}
+W4schatYP <- ggplot(data=data, aes(x=W4schatYP, y=W8QDEB2)) + geom_point(alpha=0.5)
 W4schatYP
-
-# W4Childck1YP vs W8QDEB2
-W4Childck1YP <- ggplot(data=data, aes(x=factor(W4Childck1YP), y=W8QDEB2)) + geom_boxplot()
-W4Childck1YP
-
-# W5JobYP vs W8QDEB2
-W5JobYP <- ggplot(data=data, aes(x=factor(W5JobYP), y=W8QDEB2)) + geom_boxplot()
-W5JobYP
-
-# W5EducYP vs W8QDEB2
-W5EducYP <- ggplot(data=data, aes(x=factor(W5EducYP), y=W8QDEB2)) + geom_boxplot()
-W5EducYP
-
-# W5Apprent1YP vs W8QDEB2
-W5Apprent1YP <- ggplot(data=data, aes(x=factor(W5Apprent1YP), y=W8QDEB2)) + geom_boxplot()
-W5Apprent1YP
-
-# W6JobYP vs W8QDEB2
-W6JobYP <- ggplot(data=data, aes(x=factor(W6JobYP), y=W8QDEB2)) + geom_boxplot()
-W6JobYP
-
-# W6UnivYP vs W8QDEB2
-W6UnivYP <- ggplot(data=data, aes(x=factor(W6UnivYP), y=W8QDEB2)) + geom_boxplot()
-W6UnivYP
-
-# W6EducYP vs W8QDEB2
-W6EducYP <- ggplot(data=data, aes(x=factor(W6EducYP), y=W8QDEB2)) + geom_boxplot()
-W6EducYP
-
-# W6Apprent1YP vs W8QDEB2
-W6Apprent1YP <- ggplot(data=data, aes(x=factor(W6Apprent1YP), y=W8QDEB2)) + geom_boxplot()
-W6Apprent1YP
-
-# W6acqno vs W8QDEB2
-W6acqno <- ggplot(data=data, aes(x=factor(W6acqno), y=W8QDEB2)) + geom_boxplot()
-W6acqno
-
-# W6gcse vs W8QDEB2
-W6gcse <- ggplot(data=data, aes(x=factor(W6gcse), y=W8QDEB2)) + geom_boxplot()
-W6gcse
-
-# W6als vs W8QDEB2
-W6als <- ggplot(data=data, aes(x=factor(W6als), y=W8QDEB2)) + geom_boxplot()
-W6als
-
-# W6OwnchiDV vs W8QDEB2
-W6OwnchiDV <- ggplot(data=data, aes(x=factor(W6OwnchiDV), y=W8QDEB2)) + geom_boxplot()
-W6OwnchiDV
-
-# W6Childliv vs W8QDEB2
-W6Childliv <- ggplot(data=data, aes(x=factor(W6Childliv), y=W8QDEB2)) + geom_boxplot()
-W6Childliv
+```
 
 # W6DebtattYP vs W8QDEB2
-W6DebtattYP <- ggplot(data=data, aes(x=factor(W6DebtattYP), y=W8QDEB2)) + geom_point(alpha=0.5)
+```{r}
+W6DebtattYP <- ggplot(data=data, aes(x=W6DebtattYP, y=W8QDEB2)) + geom_point(alpha=0.5)
 W6DebtattYP
+```
 
 # W8DGHQSC vs W8QDEB2
-W8DGHQSC <- ggplot(data=data, aes(x=factor(W8DGHQSC), y=W8QDEB2)) + geom_point(alpha=0.5)
+```{r}
+W8DGHQSC <- ggplot(data=data, aes(x=W8DGHQSC, y=W8QDEB2)) + geom_point(alpha=0.5)
 W8DGHQSC
-
-# W8DMARSTAT vs W8QDEB2
-W8DMARSTAT <- ggplot(data=data, aes(x=factor(W8DMARSTAT), y=W8QDEB2)) + geom_boxplot()
-W8DMARSTAT
-
-# W8TENURE vs W8QDEB2
-W8TENURE <- ggplot(data=data, aes(x=factor(W8TENURE), y=W8QDEB2)) + geom_boxplot()
-W8TENURE
-
-# W8DACTIVITY vs W8QDEB2
-W8DACTIVITY <- ggplot(data=data, aes(x=factor(W8DACTIVITY), y=W8QDEB2)) + geom_boxplot()
-W8DACTIVITY
-
-W2ghq12scr<-
-W4schatYP<-
-W6DebtattYP<-
-W8DGHQSC<-
-
-Calculate percentage of missing vlaues among predictors
-```{r}
-percentages <- c()
-for (col in names(data)) {
-    column <- data[[col]]
-    count <- sum(column >= -999 & column <= -1)
-    total_values <- length(column)
-    percentage <- (count / total_values) * 100
-    percentages <- c(percentages, percentage)
-}
-
-missing <- data.frame(Column = names(data), Percentage = percentages)
-missing
-```
-
-
-Categorical variables with missing values
-
-# remove data with less than 10% missing values
-```{r}
-new.data <- subset(data, W1wrk1aMP>-1 &
-                         W1condur5MP>-1 &
-                         W1hea2MP>-1&
-                         W1NoldBroHS>-1&
-                         W1InCarHH>-1&
-                         W1hous12HH>-1&
-                         W1usevcHH>-1&
-                         W1hiqualmum>-1&
-                         W1wrkfullmum>-1&
-                         W1empsmum>-1&
-                         W1marstatmum>-1&
-                         W1depkids>-1&
-                         W1famtyp2>-1&
-                         W1nssecfam>-1&
-                         W1ethgrpYP>-1&
-                         W1heposs9YP>-1&			
-                         W1hwndayYP>-1&			
-                         W1truantYP>-1&			
-                         W1alceverYP>-1&		
-                         W1bulrc>-1&		
-                         W1disabYP>-1&		
-                         W2disc1YP>-1&			
-                         W2depressYP>-1&
-                         W4CannTryYP>-1&			
-                         W4NamesYP>-1&			
-                         W4RacismYP>-1&			
-                         W4empsYP>-1&			
-                         W5JobYP>-1&			
-                         W5EducYP>-1&			
-                         W5Apprent1YP>-1&
-                         W6JobYP>-1&			
-                         W6UnivYP>-1&
-                         W6OwnchiDV>-1&
-                         W8DMARSTAT>-1&			
-                         W8TENURE
-                         )
-dim(new.data)
-```
-
-# replace data with NA for more than 10% missing values
-```{r}
-data[, columns_more_than_10_percent] <- lapply(data[, columns_more_than_10_percent], function(x) {
-    x[x >= -999 & x <= -1] <- NA
-    return(x)
-})
-```
-
-Continuous variables with missing values
-```{r}
 ```
