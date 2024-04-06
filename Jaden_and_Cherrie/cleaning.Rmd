@@ -95,39 +95,44 @@ Replace data with NA
 
 ```{r}
 #change all the negative values to NA
-new.data <- new.data %>%
+new.data.1 <- new.data %>%
   mutate(across(everything(), ~replace(., . < 0, NA)))
 ```
 
 Create a "missing level" for categorical variables
 
 ```{r}
-add_missing_level <- function(x) {
-  if(any(is.na(x))) { #whether there are missing values
-    x <- factor(x, levels = c(levels(x), "missing")) #create new level
-    x[is.na(x)] <- "missing" #replace NA with new level
-  }
-  return(x)
+create_missing_category <- function(data, var_name) {
+  # Replace NA values with a new level called "Missing"
+  data[[var_name]][is.na(data[[var_name]])] <- "Missing"
+  
+  # Convert the variable to a factor with the new level
+  data[[var_name]] <- factor(data[[var_name]])
+  
+  return(data)
 }
+```
 
-new.data <- new.data %>%
-  mutate(across(where(is.factor), ~add_missing_level(.)))
+```{r}
+new.data.2 <- create_missing_category(new.data.1, "W1wrkfulldad")
+new.data.2 <- create_missing_category(new.data.2, "W4AlcFreqYP")
+new.data.2 <- create_missing_category(new.data.2, "W4Childck1YP")
+new.data.2 <- create_missing_category(new.data.2, "W6EducYP")
+new.data.2 <- create_missing_category(new.data.2, "W8TENURE")
+new.data.2 <- create_missing_category(new.data.2, "W1empsdad")
+new.data.2 <- create_missing_category(new.data.2, "W6Apprent1YP")
+new.data.2 <- create_missing_category(new.data.2, "W6Childliv")
+new.data.2 <- create_missing_category(new.data.2, "W1hiqualdad")
 ```
 
 Check the missing values in new.data
 
 ```{r}
-colSums(is.na(new.data))
-```
-
-# W6EducYP vs W8QDEB2
-```{r}
-W6EducYP <- ggplot(data=new.data, aes(x=factor(W6EducYP), y=W8QDEB2)) + geom_boxplot()
-W6EducYP
+colSums(is.na(new.data.2))
 ```
 
 Store the cleaned data in a csv file
 
 ```{r}
-write.csv(new.data, file = "W8QDEB2_cleaned.csv")
+write.csv(new.data.2, file = "../data/W8QDEB2_cleaned.csv")
 ```
