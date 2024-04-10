@@ -1,7 +1,0 @@
-"0","mhq_g <- ggplot(data=eot.dat, aes(x=factor(W1hiqualmum),y=W8DINCW)) +"
-"0","  geom_boxplot()"
-"0",""
-"0","dhq_g <- ggplot(data=eot.dat, aes(x=factor(W1hiqualdad),y=W8DINCW)) +"
-"0","  geom_boxplot()"
-"0",""
-"0","grid.arrange(mhq_g, dhq_g, nrow=2)"
