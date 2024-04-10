@@ -1,0 +1,2 @@
+"0","par(mfrow=c(2,2))"
+"0","plot(model.10,which=c(1,2))"

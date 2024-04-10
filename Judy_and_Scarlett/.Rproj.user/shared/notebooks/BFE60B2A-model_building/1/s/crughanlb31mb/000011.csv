@@ -1,0 +1,1 @@
+"0","hist(model.11$residuals,main=""Histogram of residuals"",font.main=1,xlab=""Residuals"")"

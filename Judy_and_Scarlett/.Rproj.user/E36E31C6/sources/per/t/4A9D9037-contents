@@ -1,0 +1,139 @@
+Setup
+```{r}
+rm(list=ls())
+library(arm)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(gridExtra)
+```
+
+# Load data
+
+cleaned data
+```{r}
+data<-read.csv("../data/W8QDEB2_cleaned.csv",header = TRUE, stringsAsFactors=TRUE)
+head(data)
+summary(data)
+```
+
+The following models are obtained using backward elimination:
+
+# Model 1
+
+run regression on data
+```{r}
+model.1 <- lm(W8QDEB2 ~ ., data = data)
+
+# have a look at the model
+summary(model.1)
+```
+Keep predictors with more than 5% significant value in the model: "W1GrssyrHH", "IndSchool", "W1depkids", "W4RacismYP"
+
+# Model 2
+
+run regression with predictors having more than 5% significant value from the previous model 
+
+```{r}
+model.2 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W1depkids + W4RacismYP, data = data)
+
+# have a look at the model
+summary(model.2)
+```
+
+# Model 3
+
+run regression with predictors having more than 5% significant value from the previous model 
+
+```{r}
+model.3 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W4RacismYP, data = data)
+
+# have a look at the model
+summary(model.3)
+```
+
+# Check for interactions
+
+```{r}
+model_inter <- lm(W8QDEB2 ~ W1GrssyrHH*IndSchool + W1GrssyrHH*W4RacismYP + IndSchool*W4RacismYP, data = data)
+
+# have a look at the model
+summary(model_inter)
+```
+Keep the interaction between IndSchool and W4RacismYP since it has a strong significant value
+
+# Model 4
+
+run regression with predictors having more than 5% significant value from the previous model and include the interaction term (remove W4RacismYP from the regression since it is not significant)
+
+```{r}
+model.4 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + IndSchool:W4RacismYP, data = data)
+
+# have a look at the model
+summary(model.4)
+```
+# Summarize model 4
+```{r}
+par(mfrow=c(2,2))
+plot(model.4, which=c(1,2))
+hist(rstandard(model), freq = FALSE ,
+     main="Histogram of standardised residuals",
+     cex.main=0.8, xlab="Standardised residuals")
+```
+The Residual vs. Fitted plot indicates potential heteroscedasticity. 
+
+The Normal Q-Q plot signifies that there may be potential outliers in the model. 
+
+Histogram of standardised residuals shows that the residuals are not normally distributed. 
+
+
+# Rmove outliers
+
+Apply function from lecture
+
+```{r}
+show_outliers<-function(the.linear.model,topN){
+  #length of data
+  n=length(fitted(the.linear.model))
+  #number of parameters estimated
+  p=length(coef(the.linear.model))
+  #standardised residuals over 3
+  res.out<-which(abs(rstandard(the.linear.model))>3) #sometimes >2
+  #topN values
+  res.top<-head(rev(sort(abs(rstandard(the.linear.model)))),topN)
+  #high leverage values
+  lev.out<-which(lm.influence(the.linear.model)$hat>2*p/n)
+  #topN values
+  lev.top<-head(rev(sort(lm.influence(the.linear.model)$hat)),topN)
+  #high diffits
+  dffits.out<-which(dffits(the.linear.model)>2*sqrt(p/n))
+  #topN values
+  dffits.top<-head(rev(sort(dffits(the.linear.model))),topN)
+  #Cook's over 1
+  cooks.out<-which(cooks.distance(the.linear.model)>1)
+  #topN cooks
+  cooks.top<-head(rev(sort(cooks.distance(the.linear.model))),topN)
+  #Create a list with the statistics -- cant do a data frame as different lengths 
+  list.of.stats<-list(Std.res=res.out,Std.res.top=res.top, Leverage=lev.out, Leverage.top=lev.top, DFFITS=dffits.out, DFFITS.top=dffits.top, Cooks=cooks.out,Cooks.top=cooks.top)
+  #return the statistics
+  list.of.stats}
+```
+
+```{r}
+#Get outliers
+outliers <- show_outliers(model.4, topN = 5) 
+
+# Combine all outlier indices into a single vector
+all_outliers <- unique(c(outliers$Std.res, outliers$Leverage, outliers$DFFITS, outliers$Cooks))
+
+# Remove outliers from the dataset
+cleaned_data <- data[-all_outliers, ]
+
+# Refit the model without outliers
+model.5 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + IndSchool:W4RacismYP, data = cleaned_data)
+
+# have a look at the model
+summary(model.5)
+```
+
+# Final model

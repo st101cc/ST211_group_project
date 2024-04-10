@@ -1,0 +1,7 @@
+"0","try <- merged_data %>%"
+"0","  mutate(W6Apprent1YP = factor(ifelse(W6Apprent1YP == ""missing"", NA, as.character(W6Apprent1YP))))"
+"0",""
+"0","model.4 <- lm(formula_obj, data = try)"
+"2","Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]) : 
+  contrasts can be applied only to factors with 2 or more levels
+"

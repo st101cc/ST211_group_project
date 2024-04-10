@@ -1,0 +1,8 @@
+"0","#Get outliers"
+"0","outliers <- show_outliers(model.10, topN = 5) "
+"0",""
+"0","# Combine all outlier indices into a single vector"
+"0","all_outliers <- unique(c(outliers$Std.res, outliers$Leverage, outliers$DFFITS, outliers$Cooks))"
+"0",""
+"0","# Remove outliers from the dataset"
+"0","cleaned_data <- merged_data[-all_outliers, ]"

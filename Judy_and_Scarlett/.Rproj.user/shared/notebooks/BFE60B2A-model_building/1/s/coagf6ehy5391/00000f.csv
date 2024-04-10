@@ -1,0 +1,4 @@
+"0","exclude_vars <- c(""X"", ""W1GrssyrMP"", ""W1GrssyrHH"", ""W1yschat1"", ""W2ghq12scr"", ""W4schatYP"", ""W6DebtattYP"", ""W8DINCW"", ""W8DGHQSC"")"
+"0",""
+"0","data <- data %>%"
+"0","  mutate(across(where(is.integer) & !all_of(exclude_vars), factor))"

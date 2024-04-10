@@ -1,0 +1,400 @@
+Setup
+```{r}
+rm(list=ls())
+library(arm)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(gridExtra)
+```
+
+Load data
+```{r}
+data<-read.csv("../data/W8QDEB2_cleaned.csv",header = TRUE, stringsAsFactors=TRUE)
+head(data)
+summary(data)
+dim(data)
+```
+Continuous variables: "W1GrssyrHH", "W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DGHQSC"
+
+Binary variables: "W1hea2MP", "W1usevcHH", "IndSchool", "W1truantYP", "W1alceverYP", "W1bulrc", "W5JobYP", "W5EducYP", "W5Apprent1YP", "W6JobYP", "W6UnivYP", "W6EducYP", "W6Apprent1YP", "W6OwnchiDV", "W6Childliv"
+
+# Exploratory analysis of binary variables
+
+"W1hea2MP" vs "W8QDEB2"
+```{r}
+W1hea2MP<-ggplot(data=data, aes(x=factor(W1hea2MP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hea2MP
+```
+
+"W1usevcHH" vs "W8QDEB2"
+```{r}
+W1usevcHH<-ggplot(data=data, aes(x=factor(W1usevcHH),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1usevcHH
+```
+
+"IndSchool" vs "W8QDEB2"
+```{r}
+IndSchool<-ggplot(data=data, aes(x=factor(IndSchool),y=W8QDEB2)) +
+  geom_boxplot()
+  
+IndSchool
+```
+
+"W1truantYP" vs "W8QDEB2"
+```{r}
+W1truantYP<-ggplot(data=data, aes(x=factor(W1truantYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1truantYP
+```
+
+"W1alceverYP" vs "W8QDEB2"
+```{r}
+W1alceverYP<-ggplot(data=data, aes(x=factor(W1alceverYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1alceverYP
+```
+
+"W1bulrc" vs "W8QDEB2"
+```{r}
+W1bulrc<-ggplot(data=data, aes(x=factor(W1bulrc),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1bulrc
+```
+
+W5JobYP vs W8QDEB2
+```{r}
+W5JobYP <- ggplot(data=data, aes(x=factor(W5JobYP), y=W8QDEB2)) + geom_boxplot()
+W5JobYP
+```
+
+W5EducYP vs W8QDEB2
+```{r}
+W5EducYP <- ggplot(data=data, aes(x=factor(W5EducYP), y=W8QDEB2)) + geom_boxplot()
+W5EducYP
+```
+
+W5Apprent1YP vs W8QDEB2
+```{r}
+W5Apprent1YP <- ggplot(data=data, aes(x=factor(W5Apprent1YP), y=W8QDEB2)) + geom_boxplot()
+W5Apprent1YP
+```
+
+W6JobYP vs W8QDEB2
+```{r}
+W6JobYP <- ggplot(data=data, aes(x=factor(W6JobYP), y=W8QDEB2)) + geom_boxplot()
+W6JobYP
+```
+
+W6UnivYP vs W8QDEB2
+```{r}
+W6UnivYP <- ggplot(data=data, aes(x=factor(W6UnivYP), y=W8QDEB2)) + geom_boxplot()
+W6UnivYP
+```
+
+W6EducYP vs W8QDEB2
+```{r}
+W6EducYP <- ggplot(data=data, aes(x=factor(W6EducYP), y=W8QDEB2)) + geom_boxplot()
+W6EducYP
+```
+
+W6Apprent1YP vs W8QDEB2
+```{r}
+W6Apprent1YP <- ggplot(data=data, aes(x=factor(W6Apprent1YP), y=W8QDEB2)) + geom_boxplot()
+W6Apprent1YP
+```
+
+W6OwnchiDV vs W8QDEB2
+```{r}
+W6OwnchiDV <- ggplot(data=data, aes(x=factor(W6OwnchiDV), y=W8QDEB2)) + geom_boxplot()
+W6OwnchiDV
+```
+
+W6Childliv vs W8QDEB2
+```{r}
+W6Childliv <- ggplot(data=data, aes(x=factor(W6Childliv), y=W8QDEB2)) + geom_boxplot()
+W6Childliv
+```
+
+# Exploratory analysis of categorical variables
+
+"W1wrk1aMP" vs "W8QDEB2"
+```{r}
+W1wrk1aMP<-ggplot(data=data, aes(x=factor(W1wrk1aMP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1wrk1aMP
+```
+
+"W1NoldBroHS" vs "W8QDEB2"
+```{r}
+W1NoldBroHS<-ggplot(data=data, aes(x=factor(W1NoldBroHS),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1NoldBroHS
+```
+
+"W1InCarHH" vs "W8QDEB2"
+```{r}
+W1InCarHH<-ggplot(data=data, aes(x=factor(W1InCarHH),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1InCarHH
+```
+
+"W1hous12HH" vs "W8QDEB2"
+```{r}
+W1hous12HH<-ggplot(data=data, aes(x=factor(W1hous12HH),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hous12HH
+```
+
+
+"W1hiqualmum" vs "W8QDEB2"
+```{r}
+W1hiqualmum<-ggplot(data=data, aes(x=factor(W1hiqualmum),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hiqualmum
+```
+
+"W1hiqualdad" vs "W8QDEB2"
+```{r}
+W1hiqualdad<-ggplot(data=data, aes(x=factor(W1hiqualdad),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hiqualdad
+```
+
+"W1wrkfulldad" vs "W8QDEB2"
+```{r}
+W1wrkfulldad<-ggplot(data=data, aes(x=factor(W1wrkfulldad),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1wrkfulldad
+```
+
+"W1wrkfullmum" vs "W8QDEB2"
+```{r}
+W1wrkfullmum<-ggplot(data=data, aes(x=factor(W1wrkfullmum),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1wrkfullmum
+```
+
+"W1empsmum" vs "W8QDEB2"
+```{r}
+W1empsmum<-ggplot(data=data, aes(x=factor(W1empsmum),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1empsmum
+```
+
+"W1empsdad" vs "W8QDEB2"
+```{r}
+W1empsdad<-ggplot(data=data, aes(x=factor(W1empsdad),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1empsdad
+```
+
+"W1marstatmum" vs "W8QDEB2"
+```{r}
+W1marstatmum<-ggplot(data=data, aes(x=factor(W1marstatmum),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1marstatmum
+```
+
+"W1depkids" vs "W8QDEB2"
+```{r}
+W1depkids<-ggplot(data=data, aes(x=factor(W1depkids),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1depkids
+```
+
+"W1famtyp2" vs "W8QDEB2"
+```{r}
+W1famtyp2<-ggplot(data=data, aes(x=factor(W1famtyp2),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1famtyp2
+```
+
+"W1nssecfam" vs "W8QDEB2"
+```{r}
+W1nssecfam<-ggplot(data=data, aes(x=factor(W1nssecfam),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1nssecfam
+```
+
+"W1ethgrpYP" vs "W8QDEB2"
+```{r}
+W1ethgrpYP<-ggplot(data=data, aes(x=factor(W1ethgrpYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1ethgrpYP
+```
+
+"W1heposs9YP" vs "W8QDEB2"
+```{r}
+W1heposs9YP<-ggplot(data=data, aes(x=factor(W1heposs9YP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1heposs9YP
+```
+
+"W1hwndayYP" vs "W8QDEB2"
+```{r}
+W1hwndayYP<-ggplot(data=data, aes(x=factor(W1hwndayYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1hwndayYP
+```
+
+"W1disabYP" vs "W8QDEB2"
+```{r}
+W1disabYP<-ggplot(data=data, aes(x=factor(W1disabYP),y=W8QDEB2)) +
+  geom_boxplot()
+  
+W1disabYP
+```
+
+W2disc1YP vs W8QDEB2
+```{r}
+W2disc1YP <- ggplot(data=data, aes(x=factor(W2disc1YP), y=W8QDEB2)) +
+  geom_boxplot()
+W2disc1YP
+```
+
+W2depressYP vs W8QDEB2
+```{r}
+W2depressYP <- ggplot(data=data, aes(x=factor(W2depressYP), y=W8QDEB2)) +
+  geom_boxplot()
+W2depressYP
+```
+
+W4AlcFreqYP vs W8QDEB2
+```{r}
+W4AlcFreqYP <- ggplot(data=data, aes(x=factor(W4AlcFreqYP), y=W8QDEB2)) + geom_boxplot()
+W4AlcFreqYP
+```
+
+W4CannTryYP vs W8QDEB2
+```{r}
+W4CannTryYP <- ggplot(data=data, aes(x=factor(W4CannTryYP), y=W8QDEB2)) + geom_boxplot()
+W4CannTryYP
+```
+
+W4NamesYP vs W8QDEB2
+```{r}
+W4NamesYP <- ggplot(data=data, aes(x=factor(W4NamesYP), y=W8QDEB2)) + geom_boxplot()
+W4NamesYP
+```
+
+W4RacismYP vs W8QDEB2
+```{r}
+W4RacismYP <- ggplot(data=data, aes(x=factor(W4RacismYP), y=W8QDEB2)) + geom_boxplot()
+W4RacismYP
+```
+
+W4empsYP vs W8QDEB2
+```{r}
+W4empsYP <- ggplot(data=data, aes(x=factor(W4empsYP), y=W8QDEB2)) + geom_boxplot()
+W4empsYP
+```
+
+W4Childck1YP vs W8QDEB2
+```{r}
+W4Childck1YP <- ggplot(data=data, aes(x=factor(W4Childck1YP), y=W8QDEB2)) + geom_boxplot()
+W4Childck1YP
+```
+
+# W6acqno vs W8QDEB2
+```{r}
+W6acqno <- ggplot(data=data, aes(x=factor(W6acqno), y=W8QDEB2)) + geom_boxplot()
+W6acqno
+```
+
+W6gcse vs W8QDEB2
+```{r}
+W6gcse <- ggplot(data=data, aes(x=factor(W6gcse), y=W8QDEB2)) + geom_boxplot()
+W6gcse
+```
+
+W6als vs W8QDEB2
+```{r}
+W6als <- ggplot(data=data, aes(x=factor(W6als), y=W8QDEB2)) + geom_boxplot()
+W6als
+```
+
+W8DMARSTAT vs W8QDEB2
+```{r}
+W8DMARSTAT <- ggplot(data=data, aes(x=factor(W8DMARSTAT), y=W8QDEB2)) + geom_boxplot()
+W8DMARSTAT
+```
+
+W8TENURE vs W8QDEB2
+```{r}
+W8TENURE <- ggplot(data=data, aes(x=factor(W8TENURE), y=W8QDEB2)) + geom_boxplot()
+W8TENURE
+```
+
+W8DACTIVITY vs W8QDEB2
+```{r}
+W8DACTIVITY <- ggplot(data=data, aes(x=factor(W8DACTIVITY), y=W8QDEB2)) + geom_boxplot()
+W8DACTIVITY
+```
+
+Exploratory analysis of continuous variables
+
+#"W1GrssyrHH" vs "W8QDEB2"
+```{r}
+W1GrssyrHH<-ggplot(data, aes(x = W1GrssyrHH, y = W8QDEB2)) + 
+  geom_point(alpha=0.5)
+
+W1GrssyrHH
+```
+
+#"W1yschat1" vs "W8QDEB2"
+```{r}
+W1yschat1<-ggplot(data, aes(x = W1yschat1, y = W8QDEB2)) + 
+  geom_point(alpha=0.5)
+
+W1yschat1
+```
+
+# W2ghq12scr vs W8QDEB2
+```{r}
+W2ghq12scr <- ggplot(data=data, aes(x=W2ghq12scr, y=W8QDEB2)) +
+  geom_point(alpha=0.5)
+W2ghq12scr
+```
+
+# W4schatYP vs W8QDEB2
+```{r}
+W4schatYP <- ggplot(data=data, aes(x=W4schatYP, y=W8QDEB2)) + geom_point(alpha=0.5)
+W4schatYP
+```
+
+# W6DebtattYP vs W8QDEB2
+```{r}
+W6DebtattYP <- ggplot(data=data, aes(x=W6DebtattYP, y=W8QDEB2)) + geom_point(alpha=0.5)
+W6DebtattYP
+```
+
+# W8DGHQSC vs W8QDEB2
+```{r}
+W8DGHQSC <- ggplot(data=data, aes(x=W8DGHQSC, y=W8QDEB2)) + geom_point(alpha=0.5)
+W8DGHQSC
+```

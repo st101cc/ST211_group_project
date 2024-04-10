@@ -1,0 +1,2 @@
+"0","data<-read.csv(""../data/W8QDEB2_cleaned.csv"",header = TRUE, stringsAsFactors=TRUE)"
+"0","head(data)"

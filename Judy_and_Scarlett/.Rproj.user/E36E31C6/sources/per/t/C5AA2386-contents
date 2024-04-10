@@ -1,0 +1,129 @@
+## ------------------------------------------------------------------------
+library(arm)
+library(ggplot2)
+library(tidyr)
+library(car)
+
+Hourly_Pay<-read.csv("Large_Hourly_Pay.csv",header = TRUE, stringsAsFactors = TRUE)
+Hourly_Pay_NoRich<-subset(Hourly_Pay,hourpay<=150)
+summary(Hourly_Pay_NoRich)
+
+
+Hourly_Pay_NoRich$OwnHouse<-relevel(Hourly_Pay_NoRich$OwnHouse,ref="Own")
+Hourly_Pay_NoRich$Ethnicity<-relevel(Hourly_Pay_NoRich$Ethnicity,ref="White")
+Hourly_Pay_NoRich$HighestQual<-relevel(Hourly_Pay_NoRich$HighestQual,ref="DegreeHE")
+Hourly_Pay_NoRich$gender<-ifelse(Hourly_Pay_NoRich$gender==0,"M","F")
+
+#Using facet_wrap to display the scatterplots
+#line.1
+special.dat<-gather(Hourly_Pay_NoRich[,c(3,4,6,7),] ,-hourpay, key="var", value="value") 
+#line.2
+p1<-ggplot(special.dat,aes(x = value, y = log(hourpay)))+geom_point(size=0.5)+geom_smooth(method="lm", se=FALSE, color="black") +facet_wrap(~ var, scales = "free_x")
+#for book
+p1
+
+
+# Define the categorical variables as well as hourpay
+special.dat<- gather(Hourly_Pay_NoRich[,c(2,5,6,8)],key="variable", value="value", -hourpay)  
+#plots the boxplots using "free_x"
+p1<-ggplot(special.dat, aes(x=factor(value), y = log(hourpay), fill=factor(value))) +geom_boxplot() +facet_wrap(~ variable, scales = "free_x")
+#for book
+p1
+
+all.lm<-lm(hourpay~.,data=Hourly_Pay) 
+#shortcut if you want to use all the predictors in the dataset
+all.lm<-lm(hourpay~age+TotalHoursWorked+AgeYoungDep+gender 
+           +OwnHouse+HighestQual+Ethnicity,data=Hourly_Pay_NoRich)
+display(all.lm, digits=3)
+
+
+standardise.fn<-function(v){(v-mean(v))/(sd(v))}
+
+std.age<-standardise.fn(Hourly_Pay_NoRich$age)
+std.THW<-standardise.fn(Hourly_Pay_NoRich$TotalHoursWorked)
+std.AYD<-standardise.fn(Hourly_Pay_NoRich$AgeYoungDep)
+
+
+std.all.lm<-lm(hourpay~std.age+std.THW+std.AYD+gender
+               +OwnHouse+HighestQual+Ethnicity,data=Hourly_Pay_NoRich)
+display(std.all.lm, digits=3)
+
+
+Anova(all.lm)
+
+#residual plots
+par(mfrow=c(1,3))
+plot(all.lm,which=c(1,2),cex=0.7,pch=".")
+hist(all.lm$residuals,main="Histogram of standardised residuals", xlab="Std. residuals")
+
+
+log.lm<-lm(log(hourpay)~.,data=Hourly_Pay_NoRich)
+par(mfrow=c(1,3))
+plot(log.lm,which=c(1,2),cex=0.7,pch=".")
+hist(log.lm$residuals,main="Histogram of standardised residuals", xlab="Std. residuals")
+
+
+## ------------------------------------------------------------------------
+display(log.lm, digits=4)
+
+## ------------------------------------------------------------------------
+age2<-Hourly_Pay_NoRich$age*Hourly_Pay_NoRich$age
+quad.age.lm<-lm(log(hourpay)~age+age2+TotalHoursWorked+AgeYoungDep+gender 
+                +OwnHouse+HighestQual+Ethnicity,data=Hourly_Pay_NoRich)
+display(quad.age.lm, digits=3)
+
+#for geom_line to put the quadratic line
+pred.for.plot<-fitted(quad.age.lm)
+#plot of raw data
+p1<-ggplot(data=Hourly_Pay_NoRich, aes(x=age, y=log(hourpay)))
+#using geom_line to fit a line through the fitted points (i.e. the expected line)
+p1<-p1+geom_smooth(method="lm", formula=y~poly(x,2), size = 1)
+#not essential, for the book
+p1<-p1+geom_point( size=0.5)
+p1
+
+
+#Residual plots 
+par(mfrow=c(1,3))
+plot(quad.age.lm,which=c(1,2),cex=0.7,pch=".")
+hist(quad.age.lm$residuals,main="Histogram of standardised residuals", xlab="Std. residuals")
+
+log.age.lm<-lm(log(hourpay)~log(age)+TotalHoursWorked+AgeYoungDep+gender 
+               +OwnHouse+HighestQual+Ethnicity,data=Hourly_Pay_NoRich)
+
+display(log.age.lm, digits=3)
+#Residual plots 
+par(mfrow=c(1,3))
+plot(log.age.lm,which=c(1,2),cex=0.7,pch=".")
+hist(log.age.lm$residuals,main="Histogram of standardised residuals", xlab="Std. residuals")
+
+
+
+## ------------------------------------------------------------------------
+with(Hourly_Pay_NoRich, levels(HighestQual))
+
+## ------------------------------------------------------
+new.HQ<-with(Hourly_Pay_NoRich,Recode(HighestQual,"c('GCSE','None','Other')='Other'"))
+head(Hourly_Pay_NoRich$HighestQual)
+head(new.HQ)
+new.HQ<-relevel(new.HQ,ref="DegreeHE")
+
+## ------------------------------------------------------------------------
+recode.lm<-lm(log(hourpay)~age+TotalHoursWorked+AgeYoungDep+gender 
+              +OwnHouse+new.HQ+Ethnicity,data=Hourly_Pay_NoRich)
+display(recode.lm, digits=3)
+
+## ------------------------------------------------------
+display(lm(log(hourpay)~.,data=Hourly_Pay_NoRich))
+display(lm(log(hourpay)~.-Ethnicity,data=Hourly_Pay_NoRich))
+
+## ------------------------------------------------------------------------
+new.HPW<-Hourly_Pay_NoRich
+new.HPW$age<-std.age
+new.HPW$TotalHoursWorked<-std.THW
+new.HPW$AgeYoungDep<-std.AYD
+new.HPW$HighestQual<-new.HQ
+
+## ------------------------------------------------------------------------
+new.lm<-lm(log(hourpay)~.-Ethnicity,data=new.HPW)
+display(new.lm, digits=3)
