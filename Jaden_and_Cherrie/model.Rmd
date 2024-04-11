@@ -6,6 +6,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(gridExtra)
+library(car)
 ```
 
 # Load data
@@ -18,10 +19,10 @@ summary(data)
 ```
 
 The following models are obtained using backward elimination:
-
-# Model 1
-
-run regression on data
+  
+  # Model 1
+  
+  run regression on data
 ```{r}
 model.1 <- lm(W8QDEB2 ~ ., data = data)
 
@@ -135,5 +136,23 @@ model.5 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + IndSchool:W4RacismYP, data = cl
 # have a look at the model
 summary(model.5)
 ```
+#Check colinearility
+vif(model.5)
+
+#The vif() function output for model.5 indicates that there is significant multicollinearity associated with the variables IndSchool and the interaction term IndSchool:W4RacismYP, 
+#both of which have VIF values far exceeding the common thresholds of 5 or 10. 
+#Specifically, IndSchool has a VIF of 46.242392 and IndSchool:W4RacismYP has a VIF of 46.016757, suggesting that these variables are highly collinear.
+
+
+#model 6
+# Remove the highly collinear terms and re-fit the model
+model.6 <- lm(W8QDEB2 ~ W1GrssyrHH, data = cleaned_data)
+
+# Check the summary of the model
+summary(model.6)
+
+# It might also be useful to check the VIF values again to ensure that the multicollinearity issue has been resolved.
+vif(model.6)
+
 
 # Final model
