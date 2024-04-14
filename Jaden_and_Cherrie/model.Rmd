@@ -17,17 +17,25 @@ data<-read.csv("../data/W8QDEB2_cleaned.csv",header = TRUE, stringsAsFactors=TRU
 head(data)
 summary(data)
 ```
+# Transformations 
 
-binary_vars <- c("W1hea2MP", "W1usevcHH", "IndSchool", "W1truantYP", "W1alceverYP", "W1bulrc",
-                 "W5JobYP", "W5EducYP", "W5Apprent1YP", "W6JobYP", "W6UnivYP", "W6EducYP",
-                 "W6Apprent1YP", "W6OwnchiDV", "W6Childliv")
+transform continuous variables into categorical variables
+```{r}
+cont_vars <- c("W1GrssyrHH", "W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DGHQSC")
+data[cont_vars] <- lapply(data[cont_vars], factor)
+```
+
+make sure binary variables are factors
+```{r}
+binary_vars <- c("W1hea2MP", "W1usevcHH", "IndSchool", "W1truantYP", "W1alceverYP", "W1bulrc","W5JobYP", "W5EducYP", "W5Apprent1YP", "W6JobYP", "W6UnivYP", "W6EducYP","W6Apprent1YP", "W6OwnchiDV", "W6Childliv")
 data[binary_vars] <- lapply(data[binary_vars], factor)
+```
 
 The following models are obtained using backward elimination:
   
-  # Model 1
+# Model 1
   
-  run regression on data
+run regression on data
 ```{r}
 model.1 <- lm(W8QDEB2 ~ ., data = data)
 
@@ -158,19 +166,17 @@ summary(model.5)
 ```{r}
 vif(model.5)
 ```
-
 The vif() function output for model.5 indicates that IndSchool and IndSchool:W4RacismYP both have VIF values greater than 7, which is not as high as the usual threshold of 10, 
 
-#model 6
-# Remove the highly collinear terms and re-fit the model
-# Fit model without IndSchool
+# Model 6
+Remove the highly collinear terms and re-fit the model
 ```{r}
 model.6 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
                 W1depkids + IndSchool + W8TENURE + W1GrssyrHH:W1NoldBroHS + IndSchool:W4RacismYP + W4RacismYP, data = data)
 
-display(model.6)
 summary(model.6)
 ```
+The predictors explain around 14% of the variability in "W8QDEB2".
 
 # Calculate VIF for the revised model
 ```{r}
@@ -178,4 +184,10 @@ vif(model.6)
 ```
 
 
-# Final model
+# Final model analysis
+
+```{r}
+par(mfrow=c(2,2))
+plot(model.6,which=c(1,2))
+hist(model.6$residuals,main="Histogram of residuals",font.main=1,xlab="Residuals")
+```
