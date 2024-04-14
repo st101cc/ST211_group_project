@@ -595,6 +595,10 @@ W1GrssyrHH<-ggplot(data, aes(x = W1GrssyrHH, y = W8QDEB2)) +
 
 W1GrssyrHH
 ```
+```{r}
+summary(lm(W8QDEB2 ~ W1GrssyrHH, data=data))
+```
+highly significant
 
 #"W1yschat1" vs "W8QDEB2"
 ```{r}
@@ -603,6 +607,10 @@ W1yschat1<-ggplot(data, aes(x = W1yschat1, y = W8QDEB2)) +
 
 W1yschat1
 ```
+```{r}
+summary(lm(W8QDEB2 ~ W1yschat1, data=data))
+```
+not significant 
 
 # W2ghq12scr vs W8QDEB2
 ```{r}
@@ -610,21 +618,38 @@ W2ghq12scr <- ggplot(data=data, aes(x=W2ghq12scr, y=W8QDEB2)) +
   geom_point(alpha=0.5)
 W2ghq12scr
 ```
+```{r}
+summary(lm(W8QDEB2 ~ W2ghq12scr, data=data))
+```
+not significant
 
 # W4schatYP vs W8QDEB2
 ```{r}
 W4schatYP <- ggplot(data=data, aes(x=W4schatYP, y=W8QDEB2)) + geom_point(alpha=0.5)
 W4schatYP
 ```
+```{r}
+summary(lm(W8QDEB2 ~ W4schatYP, data=data))
+```
+not significant
 
 # W6DebtattYP vs W8QDEB2
 ```{r}
 W6DebtattYP <- ggplot(data=data, aes(x=W6DebtattYP, y=W8QDEB2)) + geom_point(alpha=0.5)
 W6DebtattYP
 ```
+```{r}
+summary(lm(W8QDEB2 ~ W6DebtattYP, data=data))
+```
+not significant 
 
 # W8DGHQSC vs W8QDEB2
 ```{r}
 W8DGHQSC <- ggplot(data=data, aes(x=W8DGHQSC, y=W8QDEB2)) + geom_point(alpha=0.5)
 W8DGHQSC
 ```
+
+```{r}
+summary(lm(W8QDEB2 ~ W8DGHQSC, data=data))
+```
+not significant 

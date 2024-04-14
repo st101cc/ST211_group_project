@@ -21,7 +21,7 @@ summary(data)
 
 transform continuous variables into categorical variables
 ```{r}
-cont_vars <- c("W1GrssyrHH", "W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DGHQSC")
+cont_vars <- c("W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DGHQSC")
 data[cont_vars] <- lapply(data[cont_vars], factor)
 ```
 
@@ -42,68 +42,66 @@ model.1 <- lm(W8QDEB2 ~ ., data = data)
 # have a look at the model
 summary(model.1)
 ```
-Keep predictors with more than 10% significant value in the model: "W1GrssyrHH", "IndSchool", "W1depkids", "W4RacismYP"
+Keep predictors with levels that are significant at 10%: "W1hiqualdad", "W1empsdad", "IndSchool", "W4RacismYP", "W4schatYP", "W8DGHQSC", W8TENURE" 
+
+Remove "W1GrssyrHH" first since it has more than 30% missing value, add it back to the final model to see if it is significant.
 
 # Model 2
 
 run regression with predictors having more than 10% significant value from the previous model 
 
 ```{r}
-model.2 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
-                      W1depkids + IndSchool + W4RacismYP + W8TENURE, data = data)
+model.2 <- lm(W8QDEB2 ~ W1hiqualdad + W1empsdad + IndSchool + W4RacismYP + W4schatYP + W8DGHQSC + W8TENURE, data = data)
 
 # have a look at the model
 summary(model.2)
 ```
-
+Only W8TENURE, W4RacismYP, and IndSchool are significant
 
 # Check for interactions
 
 ```{r}
 # Fitting a model with interaction terms between predictors
-model.interaction <- lm(W8QDEB2 ~ W1GrssyrHH * W1NoldBroHS + W1GrssyrHH * IndSchool + W1NoldBroHS * W4RacismYP + IndSchool * W4RacismYP, data = data)
+model.interaction.1 <- lm(W8QDEB2 ~ IndSchool*W4RacismYP, data = data)
 
 # View the summary of the model with interactions
-summary(model.interaction)
+summary(model.interaction.1)
 ```
+IndSchool1:W4RacismYP is highly significant. 
 
-In the regression model with interaction terms that you've run, you should decide which predictors and interaction terms to keep based on their statistical significance and the explanatory value they add to the model. Here's how to interpret the results and decide which components to retain:
-  
-  Interpretation of the Regression Output
-Significant Predictors:
-  
-  IndSchool1: Coefficient = 310,500, p-value = 1.11e-15 (highly significant)
-IndSchool1:W4RacismYP: Coefficient = -147,500, p-value = 1.93e-14 (highly significant)
-W1GrssyrHH:W1NoldBroHS: Coefficient = 0.08258, p-value = 0.0416 (significant at the 5% level)
-Other Predictors:
-  
-  Other terms like W1GrssyrHH, W1NoldBroHS, and W4RacismYP on their own do not show significant p-values, suggesting they might not have a strong independent effect on W8QDEB2.
-Decisions on Which Terms to Keep
-Keep Significant Interaction Terms: IndSchool1 and W4RacismYP: This interaction term is highly significant and suggests that the effect of school independence on W8QDEB2 varies depending on the levels of perceived racism (W4RacismYP). 
-This term adds important insights into how these variables interact to affect the outcome.
-W1GrssyrHH and W1NoldBroHS: This term is also significant, indicating a specific interaction between gross yearly household income and the number of older brothers, which affects the dependent variable.
-Review the Role of Individual Predictors:IndSchool1: Even alone, this predictor is highly significant and should definitely be retained.
-For other non-significant predictors (e.g., W1GrssyrHH, W1NoldBroHS, W4RacismYP), consider whether they are necessary as control variables or if their inclusion is supported by theory. If not, they might be candidates for removal to simplify the model
+```{r}
+# Fitting a model with interaction terms between predictors
+model.interaction.1 <- lm(W8QDEB2 ~ IndSchool*W8TENURE, data = data)
+
+# View the summary of the model with interactions
+summary(model.interaction.1)
+```
+IndSchool:W8TENURE is significant. 
+
+```{r}
+# Fitting a model with interaction terms between predictors
+model.interaction.1 <- lm(W8QDEB2 ~ W8TENURE*W4RacismYP, data = data)
+
+# View the summary of the model with interactions
+summary(model.interaction.1)
+```
+W8TENURE3:W4RacismYP is significant, we will include it in the next model and remove it afterwards if it is not significant. 
 
 # Model 4
 
-run regression with predictors having more than 5% significant value from the previous model and include the interaction term
+run regression with predictors having more than 5% significant value from the previous model and include the significant interaction term
 
 ```{r}
-model.4 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
-                W1depkids + IndSchool + W4RacismYP + W8TENURE + W1GrssyrHH:W1NoldBroHS + IndSchool:W4RacismYP, data = data)
+model.4 <- lm(W8QDEB2 ~ IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
 
 # have a look at the model
-display(model.4)
 summary(model.4)
 ```
 # Summarize model 4
 ```{r}
 par(mfrow=c(2,2))
 plot(model.4, which=c(1,2))
-hist(rstandard(model.4), freq = FALSE ,
-     main="Histogram of standardised residuals",
-     cex.main=0.8, xlab="Standardised residuals")
+hist(model.4$residuals,main="Histogram of residuals",font.main=1,xlab="Residuals")
 ```
 The Residual vs. Fitted plot indicates potential heteroscedasticity. 
 
@@ -153,15 +151,18 @@ all_outliers <- unique(c(outliers$Std.res, outliers$Leverage, outliers$DFFITS, o
 
 # Remove outliers from the dataset
 cleaned_data <- data[-all_outliers, ]
+```
 
+# Model 5 
+
+```{r}
 # Refit the model without outliers
-model.5 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
-                W1depkids + IndSchool + W4RacismYP + W8TENURE + W1GrssyrHH:W1NoldBroHS + IndSchool:W4RacismYP, data = cleaned_data)
+model.5 <- lm(W8QDEB2 ~ IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
 
 # have a look at the model
-display(model.5)
 summary(model.5)
 ```
+
 # Check colinearility
 ```{r}
 vif(model.5)
@@ -169,14 +170,16 @@ vif(model.5)
 The vif() function output for model.5 indicates that IndSchool and IndSchool:W4RacismYP both have VIF values greater than 7, which is not as high as the usual threshold of 10, 
 
 # Model 6
-Remove the highly collinear terms and re-fit the model
-```{r}
-model.6 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
-                W1depkids + IndSchool + W8TENURE + W1GrssyrHH:W1NoldBroHS + IndSchool:W4RacismYP + W4RacismYP, data = data)
+Remove the highly collinear terms and re-fit the model. 
 
+```{r}
+model.6 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
+
+# have a look at the model
 summary(model.6)
 ```
-The predictors explain around 14% of the variability in "W8QDEB2".
+Keep "W1GrssyrHH" since it is significant at the 5% level.
+The predictors explain around 20% of the variability in "W8QDEB2".
 
 # Calculate VIF for the revised model
 ```{r}

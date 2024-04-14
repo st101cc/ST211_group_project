@@ -38,14 +38,19 @@ Continuous: (more than 30 percent missing)
   
   
 Categorical: (more than 10 percent missing)
-  "W1hiqualdad": 26.41
-  "W1wrkfulldad": 20.60
-  "W1empsdad": 20.60
-  "W4AlcFreqYP": 17.41
-  "W4Childck1YP":99.44
-  "W6EducYP":38.99
-  "W6Apprent1YP":38.99
-  "W6Childliv":97.22
+"W1hiqualdad": 26.41%
+"W1wrkfulldad": 20.60%
+"W1empsdad": 20.60%
+"W4AlcFreqYP": 17.41%
+"W4Childck1YP":99.44%
+"W5EducYP":13.89%
+"W5Apprent1YP":17.37%
+"W6JopYP":17.37%
+"W6EducYP":38.99%
+"W6Apprent1YP":38.99%
+"W6Childliv":97.22%
+"W8DMARSTAT":17.37%
+"W8TENURE":10.4%
 
 # Clean data
 
@@ -80,13 +85,7 @@ new.data <- subset(data, W1wrk1aMP>-1 &
                          W4RacismYP>-1&			
                          W4empsYP>-1&			
                          W5JobYP>-1&			
-                         W5EducYP>-1&			
-                         W5Apprent1YP>-1&
-                         W6JobYP>-1&			
-                         W6UnivYP>-1&
-                         W6OwnchiDV>-1&
-                         W8DMARSTAT>-1&			
-                         W8TENURE
+                         W6UnivYP>-1
                          )
 dim(new.data)
 ```
@@ -117,12 +116,17 @@ create_missing_category <- function(data, var_name) {
 new.data.2 <- create_missing_category(new.data.1, "W1wrkfulldad")
 new.data.2 <- create_missing_category(new.data.2, "W4AlcFreqYP")
 new.data.2 <- create_missing_category(new.data.2, "W4Childck1YP")
+new.data.2 <- create_missing_category(new.data.2, "W5EducYP")
+new.data.2 <- create_missing_category(new.data.2, "W5Apprent1YP")
 new.data.2 <- create_missing_category(new.data.2, "W6EducYP")
 new.data.2 <- create_missing_category(new.data.2, "W8TENURE")
 new.data.2 <- create_missing_category(new.data.2, "W1empsdad")
 new.data.2 <- create_missing_category(new.data.2, "W6Apprent1YP")
 new.data.2 <- create_missing_category(new.data.2, "W6Childliv")
+new.data.2 <- create_missing_category(new.data.2, "W6JobYP")
 new.data.2 <- create_missing_category(new.data.2, "W1hiqualdad")
+new.data.2 <- create_missing_category(new.data.2, "W8DMARSTAT")
+
 ```
 
 Check the missing values in new.data
