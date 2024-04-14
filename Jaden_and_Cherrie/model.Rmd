@@ -13,10 +13,15 @@ library(car)
 
 cleaned data
 ```{r}
-data<-read.csv("../data/W8QDEB2_cleaned.csv",header = TRUE, stringsAsFactors=TRUE)
+data<-read.csv("W8QDEB2_cleaned.csv",header = TRUE, stringsAsFactors=TRUE)
 head(data)
 summary(data)
 ```
+
+binary_vars <- c("W1hea2MP", "W1usevcHH", "IndSchool", "W1truantYP", "W1alceverYP", "W1bulrc",
+                 "W5JobYP", "W5EducYP", "W5Apprent1YP", "W6JobYP", "W6UnivYP", "W6EducYP",
+                 "W6Apprent1YP", "W6OwnchiDV", "W6Childliv")
+data[binary_vars] <- lapply(data[binary_vars], factor)
 
 The following models are obtained using backward elimination:
   
@@ -27,57 +32,70 @@ The following models are obtained using backward elimination:
 model.1 <- lm(W8QDEB2 ~ ., data = data)
 
 # have a look at the model
+display(model.1)
 summary(model.1)
 ```
-Keep predictors with more than 5% significant value in the model: "W1GrssyrHH", "IndSchool", "W1depkids", "W4RacismYP"
+Keep predictors with more than 10% significant value in the model: "W1GrssyrHH", "IndSchool", "W1depkids", "W4RacismYP"
 
 # Model 2
 
-run regression with predictors having more than 5% significant value from the previous model 
+run regression with predictors having more than 10% significant value from the previous model 
 
 ```{r}
-model.2 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W1depkids + W4RacismYP, data = data)
-
+model.2 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
+                      W1depkids + IndSchool + W4RacismYP + W8TENURE, data = data)
 # have a look at the model
+display(model.2)
 summary(model.2)
 ```
 
-# Model 3
-
-run regression with predictors having more than 5% significant value from the previous model 
-
-```{r}
-model.3 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W4RacismYP, data = data)
-
-# have a look at the model
-summary(model.3)
-```
 
 # Check for interactions
 
 ```{r}
-model_inter <- lm(W8QDEB2 ~ W1GrssyrHH*IndSchool + W1GrssyrHH*W4RacismYP + IndSchool*W4RacismYP, data = data)
+# Fitting a model with interaction terms between predictors
+model.interaction <- lm(W8QDEB2 ~ W1GrssyrHH * W1NoldBroHS + W1GrssyrHH * IndSchool +
+                          W1NoldBroHS * W4RacismYP + IndSchool * W4RacismYP, data = data)
 
-# have a look at the model
-summary(model_inter)
+# View the summary of the model with interactions
+summary(model.interaction)
 ```
-Keep the interaction between IndSchool and W4RacismYP since it has a strong significant value
+
+In the regression model with interaction terms that you've run, you should decide which predictors and interaction terms to keep based on their statistical significance and the explanatory value they add to the model. Here's how to interpret the results and decide which components to retain:
+  
+  Interpretation of the Regression Output
+Significant Predictors:
+  
+  IndSchool1: Coefficient = 310,500, p-value = 1.11e-15 (highly significant)
+IndSchool1:W4RacismYP: Coefficient = -147,500, p-value = 1.93e-14 (highly significant)
+W1GrssyrHH:W1NoldBroHS: Coefficient = 0.08258, p-value = 0.0416 (significant at the 5% level)
+Other Predictors:
+  
+  Other terms like W1GrssyrHH, W1NoldBroHS, and W4RacismYP on their own do not show significant p-values, suggesting they might not have a strong independent effect on W8QDEB2.
+Decisions on Which Terms to Keep
+Keep Significant Interaction Terms: IndSchool1 and W4RacismYP: This interaction term is highly significant and suggests that the effect of school independence on W8QDEB2 varies depending on the levels of perceived racism (W4RacismYP). 
+This term adds important insights into how these variables interact to affect the outcome.
+W1GrssyrHH and W1NoldBroHS: This term is also significant, indicating a specific interaction between gross yearly household income and the number of older brothers, which affects the dependent variable.
+Review the Role of Individual Predictors:IndSchool1: Even alone, this predictor is highly significant and should definitely be retained.
+For other non-significant predictors (e.g., W1GrssyrHH, W1NoldBroHS, W4RacismYP), consider whether they are necessary as control variables or if their inclusion is supported by theory. If not, they might be candidates for removal to simplify the model
 
 # Model 4
 
-run regression with predictors having more than 5% significant value from the previous model and include the interaction term (remove W4RacismYP from the regression since it is not significant)
+run regression with predictors having more than 5% significant value from the previous model and include the interaction term
 
 ```{r}
-model.4 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + IndSchool:W4RacismYP, data = data)
+model.4 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
+                W1depkids + IndSchool + W4RacismYP + W8TENURE + W1GrssyrHH:W1NoldBroHS + IndSchool:W4RacismYP, data = data)
 
 # have a look at the model
+display(model.4)
 summary(model.4)
 ```
 # Summarize model 4
 ```{r}
 par(mfrow=c(2,2))
 plot(model.4, which=c(1,2))
-hist(rstandard(model), freq = FALSE ,
+hist(rstandard(model.4), freq = FALSE ,
      main="Histogram of standardised residuals",
      cex.main=0.8, xlab="Standardised residuals")
 ```
@@ -131,27 +149,27 @@ all_outliers <- unique(c(outliers$Std.res, outliers$Leverage, outliers$DFFITS, o
 cleaned_data <- data[-all_outliers, ]
 
 # Refit the model without outliers
-model.5 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + IndSchool:W4RacismYP, data = cleaned_data)
+model.5 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
+                W1depkids + IndSchool + W4RacismYP + W8TENURE + W1GrssyrHH:W1NoldBroHS + IndSchool:W4RacismYP, data = cleaned_data)
 
 # have a look at the model
+display(model.5)
 summary(model.5)
 ```
 #Check colinearility
 vif(model.5)
 
-#The vif() function output for model.5 indicates that there is significant multicollinearity associated with the variables IndSchool and the interaction term IndSchool:W4RacismYP, 
-#both of which have VIF values far exceeding the common thresholds of 5 or 10. 
-#Specifically, IndSchool has a VIF of 46.242392 and IndSchool:W4RacismYP has a VIF of 46.016757, suggesting that these variables are highly collinear.
-
+#The vif() function output for model.5 indicates that IndSchool and IndSchool:W4RacismYP both have VIF values greater than 7, which is not as high as the usual threshold of 10, 
 
 #model 6
 # Remove the highly collinear terms and re-fit the model
-model.6 <- lm(W8QDEB2 ~ W1GrssyrHH, data = cleaned_data)
+# Fit model without IndSchool
+model.6 <- lm(W8QDEB2 ~ W1GrssyrHH + W1NoldBroHS + W1hiqualdad +
+                W1depkids + IndSchool + W8TENURE + W1GrssyrHH:W1NoldBroHS + IndSchool:W4RacismYP + W4RacismYP, data = data)
 
-# Check the summary of the model
+display(model.6)
 summary(model.6)
-
-# It might also be useful to check the VIF values again to ensure that the multicollinearity issue has been resolved.
+# Calculate VIF for the revised model
 vif(model.6)
 
 
