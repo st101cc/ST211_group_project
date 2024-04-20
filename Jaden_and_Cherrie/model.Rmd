@@ -6,6 +6,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(gridExtra)
+library(car)
 ```
 
 # Load data
@@ -16,11 +17,24 @@ data<-read.csv("../data/W8QDEB2_cleaned.csv",header = TRUE, stringsAsFactors=TRU
 head(data)
 summary(data)
 ```
+# Transformations 
+
+transform continuous variables into categorical variables
+```{r}
+cont_vars <- c("W1yschat1", "W2ghq12scr", "W4schatYP", "W6DebtattYP", "W8DGHQSC")
+data[cont_vars] <- lapply(data[cont_vars], factor)
+```
+
+make sure binary variables are factors
+```{r}
+binary_vars <- c("W1hea2MP", "W1usevcHH", "IndSchool", "W1truantYP", "W1alceverYP", "W1bulrc","W5JobYP", "W5EducYP", "W5Apprent1YP", "W6JobYP", "W6UnivYP", "W6EducYP","W6Apprent1YP", "W6OwnchiDV", "W6Childliv")
+data[binary_vars] <- lapply(data[binary_vars], factor)
+```
 
 The following models are obtained using backward elimination:
-
+  
 # Model 1
-
+  
 run regression on data
 ```{r}
 model.1 <- lm(W8QDEB2 ~ ., data = data)
@@ -28,46 +42,57 @@ model.1 <- lm(W8QDEB2 ~ ., data = data)
 # have a look at the model
 summary(model.1)
 ```
-Keep predictors with more than 5% significant value in the model: "W1GrssyrHH", "IndSchool", "W1depkids", "W4RacismYP"
+Keep predictors with levels that are significant at 10%: "W1hiqualdad", "W1empsdad", "IndSchool", "W4RacismYP", "W4schatYP", "W8DGHQSC", W8TENURE" 
+
+Remove "W1GrssyrHH" first since it has more than 30% missing value, add it back to the final model to see if it is significant.
 
 # Model 2
 
-run regression with predictors having more than 5% significant value from the previous model 
+run regression with predictors having more than 10% significant value from the previous model 
 
 ```{r}
-model.2 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W1depkids + W4RacismYP, data = data)
+model.2 <- lm(W8QDEB2 ~ W1hiqualdad + W1empsdad + IndSchool + W4RacismYP + W4schatYP + W8DGHQSC + W8TENURE, data = data)
 
 # have a look at the model
 summary(model.2)
 ```
-
-# Model 3
-
-run regression with predictors having more than 5% significant value from the previous model 
-
-```{r}
-model.3 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W4RacismYP, data = data)
-
-# have a look at the model
-summary(model.3)
-```
+Only W8TENURE, W4RacismYP, and IndSchool are significant
 
 # Check for interactions
 
 ```{r}
-model_inter <- lm(W8QDEB2 ~ W1GrssyrHH*IndSchool + W1GrssyrHH*W4RacismYP + IndSchool*W4RacismYP, data = data)
+# Fitting a model with interaction terms between predictors
+model.interaction.1 <- lm(W8QDEB2 ~ IndSchool*W4RacismYP, data = data)
 
-# have a look at the model
-summary(model_inter)
+# View the summary of the model with interactions
+summary(model.interaction.1)
 ```
-Keep the interaction between IndSchool and W4RacismYP since it has a strong significant value
+IndSchool1:W4RacismYP is highly significant. 
+
+```{r}
+# Fitting a model with interaction terms between predictors
+model.interaction.1 <- lm(W8QDEB2 ~ IndSchool*W8TENURE, data = data)
+
+# View the summary of the model with interactions
+summary(model.interaction.1)
+```
+IndSchool:W8TENURE is significant. 
+
+```{r}
+# Fitting a model with interaction terms between predictors
+model.interaction.1 <- lm(W8QDEB2 ~ W8TENURE*W4RacismYP, data = data)
+
+# View the summary of the model with interactions
+summary(model.interaction.1)
+```
+W8TENURE3:W4RacismYP is significant, we will include it in the next model and remove it afterwards if it is not significant. 
 
 # Model 4
 
-run regression with predictors having more than 5% significant value from the previous model and include the interaction term (remove W4RacismYP from the regression since it is not significant)
+run regression with predictors having more than 5% significant value from the previous model and include the significant interaction term
 
 ```{r}
-model.4 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + IndSchool:W4RacismYP, data = data)
+model.4 <- lm(W8QDEB2 ~ IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
 
 # have a look at the model
 summary(model.4)
@@ -76,9 +101,7 @@ summary(model.4)
 ```{r}
 par(mfrow=c(2,2))
 plot(model.4, which=c(1,2))
-hist(rstandard(model), freq = FALSE ,
-     main="Histogram of standardised residuals",
-     cex.main=0.8, xlab="Standardised residuals")
+hist(model.4$residuals,main="Histogram of residuals",font.main=1,xlab="Residuals")
 ```
 The Residual vs. Fitted plot indicates potential heteroscedasticity. 
 
@@ -128,12 +151,46 @@ all_outliers <- unique(c(outliers$Std.res, outliers$Leverage, outliers$DFFITS, o
 
 # Remove outliers from the dataset
 cleaned_data <- data[-all_outliers, ]
+```
 
+# Model 5 
+
+```{r}
 # Refit the model without outliers
-model.5 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + IndSchool:W4RacismYP, data = cleaned_data)
+model.5 <- lm(W8QDEB2 ~ IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP  + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
 
 # have a look at the model
 summary(model.5)
 ```
 
-# Final model
+# Check colinearility
+```{r}
+vif(lm(W8QDEB2 ~ IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP, data=data))
+```
+The vif() function output for the regression model indicates that IndSchool and IndSchool:W4RacismYP both have VIF values greater than 7, which is not as high as the usual threshold of 10, so we will not remove it from our model.
+
+# Model 6
+Remove the highly collinear terms and re-fit the model. 
+
+```{r}
+model.6 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
+
+# have a look at the model
+display(model.6)
+```
+Keep "W1GrssyrHH" since it is significant at the 5% level.
+The predictors explain around 20% of the variability in "W8QDEB2".
+
+# Calculate VIF for the revised model
+```{r}
+vif(model.6)
+```
+
+
+# Final model analysis
+
+```{r}
+par(mfrow=c(2,2))
+plot(model.6,which=c(1,2))
+hist(model.6$residuals,main="Histogram of residuals",font.main=1,xlab="Residuals")
+```
