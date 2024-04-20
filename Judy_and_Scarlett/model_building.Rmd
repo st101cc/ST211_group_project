@@ -338,11 +338,30 @@ formula_str <- paste("W8DINCW ~", paste(kept_var, collapse = " + "))
 formula_obj <- as.formula(formula_str)
 model.10 <- lm(formula_obj, data = merged_data)
 
-display(model.10)
+summary(model.10)
 ```
 
 # Check for interaction
-There are already many predictors in the existing model, thus adding interactions will make the model more complex and harder to interpret. We decided not to add interactions in this model.
+```{r}
+summary_model <- summary(model.10)
+
+# Extracting coefficients table
+coefficients_table <- summary_model$coefficients
+
+# Sorting variables by their p-values
+sorted_vars <- coefficients_table[order(coefficients_table[, "Pr(>|t|)"]), ]
+
+rownames(sorted_vars)[-1][2:3]
+```
+
+```{r}
+model_inter <- lm(W8DINCW ~ W1nssecfam*W1ethgrpYP+W1hea2MP+W1marstatmum+W1nssecfam+W1ethgrpYP+W1heposs9YP+W1hwndayYP+W1disabYP+W2disc1YP+W4CannTryYP+W5JobYP+W5EducYP+W5Apprent1YP+W6JobYP+W6UnivYP+W2ghq12scr, data = merged_data)
+
+# have a look at the model
+display(model_inter)
+```
+
+We decided to check the interactions between the top 2 variables with the highest significance which are "W1nssecfam" and "W1ethgrpYP". The interaction term is not significant in the model, so we decided to keep the model without interaction terms.
 
 # Missing value analysis
 For current model, the predictors we included have no missing values. We have already removed the predictors with missing values in the model building process.
