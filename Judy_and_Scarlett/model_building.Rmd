@@ -407,7 +407,7 @@ formula_str <- paste("W8DINCW ~", paste(kept_var, collapse = " + "))
 formula_obj <- as.formula(formula_str)
 model.11 <- lm(formula_obj, data = cleaned_data)
 
-summary(model.11)
+display(model.11)
 ```
 ```{r}
 par(mfrow=c(2,2))

@@ -157,7 +157,7 @@ cleaned_data <- data[-all_outliers, ]
 
 ```{r}
 # Refit the model without outliers
-model.5 <- lm(W8QDEB2 ~ IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
+model.5 <- lm(W8QDEB2 ~ IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP  + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
 
 # have a look at the model
 summary(model.5)
@@ -165,9 +165,9 @@ summary(model.5)
 
 # Check colinearility
 ```{r}
-vif(model.5)
+vif(lm(W8QDEB2 ~ IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP, data=data))
 ```
-The vif() function output for model.5 indicates that IndSchool and IndSchool:W4RacismYP both have VIF values greater than 7, which is not as high as the usual threshold of 10, 
+The vif() function output for the regression model indicates that IndSchool and IndSchool:W4RacismYP both have VIF values greater than 7, which is not as high as the usual threshold of 10, so we will not remove it from our model.
 
 # Model 6
 Remove the highly collinear terms and re-fit the model. 
@@ -176,7 +176,7 @@ Remove the highly collinear terms and re-fit the model.
 model.6 <- lm(W8QDEB2 ~ W1GrssyrHH + IndSchool + W4RacismYP + W8TENURE + IndSchool:W4RacismYP + IndSchool:W8TENURE + W4RacismYP:W8TENURE, data = data)
 
 # have a look at the model
-summary(model.6)
+display(model.6)
 ```
 Keep "W1GrssyrHH" since it is significant at the 5% level.
 The predictors explain around 20% of the variability in "W8QDEB2".
